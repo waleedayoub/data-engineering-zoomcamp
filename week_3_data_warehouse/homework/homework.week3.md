@@ -36,9 +36,14 @@ How many records have both a blank (null) PUlocationID and DOlocationID in the e
 ## Question 4:
 What is the best strategy to optimize the table if query always filter by pickup_datetime and order by affiliated_base_number?
 - Cluster on pickup_datetime Cluster on affiliated_base_number
-- Partition by pickup_datetime Cluster on affiliated_base_number
+- Partition by pickup_datetime Cluster on affiliated_base_number <-
 - Partition by pickup_datetime Partition by affiliated_base_number
 - Partition by affiliated_base_number Cluster on pickup_datetime
+
+### Response:
+If your queries always filter by the pickup_datetime column and order by the affiliated_base_number column, the best optimization strategy would be Option 2: Partition by pickup_datetime and Cluster on affiliated_base_number.
+
+Partitioning the table by pickup_datetime will allow you to efficiently retrieve only the data for the desired date range, rather than scanning the entire table. And clustering the data by affiliation_base_number will ensure that rows with the same affiliation_base_number are stored together on disk, reducing the number of blocks that need to be read when executing queries filtered by this column and ordered by pickup_datetime.
 
 ## Question 5:
 Implement the optimized solution you chose for question 4. Write a query to retrieve the distinct affiliated_base_number between pickup_datetime 2019/03/01 and 2019/03/31 (inclusive).</br> 
@@ -61,7 +66,7 @@ Where is the data stored in the External Table you created?
 ## Question 7:
 It is best practice in Big Query to always cluster your data:
 - True
-- False
+- False <-
 
 
 ## (Not required) Question 8:
