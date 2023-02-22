@@ -1,5 +1,18 @@
+<<<<<<< HEAD
 build
+=======
+>>>>>>> class/main
 .gradle
 bin
 !src/main/resources/rides.csv
 
+<<<<<<< HEAD
+=======
+build/classes
+build/generated
+build/libs
+build/reports
+build/resources
+build/test-results
+build/tmp
+>>>>>>> class/main

@@ -8,7 +8,10 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.streams.StreamsConfig;
+<<<<<<< HEAD
 import org.example.data.Ride;
+=======
+>>>>>>> class/main
 import schemaregistry.RideRecord;
 
 import java.io.FileReader;

@@ -17,11 +17,22 @@
 
 * [Homework](week_2_workflow_orchestration/homework.md)
 
+<<<<<<< HEAD
 
 Week 3: Data Warehouse
 
 
 Week 4: Analytics Engineering
+=======
+[**Week 3: Data Warehouse**](week_3_data_warehouse)
+
+* [Homework](week_3_data_warehouse/homework.md)
+
+
+[**Week 4: Analytics Engineering**](week_4_analytics_engineering/)
+
+* [Homework](week_4_analytics_engineering/homework.md)
+>>>>>>> class/main
 
 
 Week 5: Batch processing

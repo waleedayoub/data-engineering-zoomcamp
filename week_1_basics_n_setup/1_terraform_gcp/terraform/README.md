@@ -23,4 +23,8 @@ terraform apply -var="project=<your-gcp-project-id>"
 ```shell
 # Delete infra after your work, to avoid costs on any running services
 terraform destroy
+<<<<<<< HEAD
 ```
+=======
+```
+>>>>>>> class/main
