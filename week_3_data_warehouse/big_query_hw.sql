@@ -4,7 +4,6 @@ OPTIONS (
   uris = ['gs://nyc-tl-data/trip data/fhv_tripdata_2019-*.csv']
 );
 
-
 SELECT count(*) FROM `taxi-rides-ny.nytaxi.fhv_tripdata`;
 
 
