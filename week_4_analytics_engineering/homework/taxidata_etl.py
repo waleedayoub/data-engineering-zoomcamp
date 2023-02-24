@@ -8,7 +8,7 @@ base_url = "https://github.com/DataTalksClub/nyc-tlc-data/releases/download/"
 # switch out the bucketname
 BUCKET = os.environ.get("GCP_GCS_BUCKET", "dtc_data_lake_possible-lotus-375803")
 
-print(f"the fhv base url is {base_url} and i upload to {BUCKET}")
+print(f"the service base url is {base_url} and i upload to {BUCKET}")
 
 
 # create connection to GCS and upload the file
@@ -24,7 +24,16 @@ def upload_to_gcs(bucket, object_name, file_location):
     client = storage.Client()
     bucket = client.bucket(bucket)
     blob = bucket.blob(object_name)
-    blob.upload_from_string(file_location)
+    file_status = storage.Blob(bucket=bucket, name=object_name).exists(client)
+    if file_status == False:
+        blob.upload_from_string(file_location)
+    else:
+        print("file already exists!")
+
+
+# write a function to upload all the data to BQ
+
+# write a function to upload all the data to my local postgres
 
 
 # parse the file location and call upload to gcs
@@ -48,4 +57,8 @@ def web_to_gcs(year: int, service: str) -> None:
 
 
 if __name__ == "__main__":
-    web_to_gcs(2019, "fhv")
+    # web_to_gcs(2019, "fhv")
+    # web_to_gcs(2019, "yellow")
+    # web_to_gcs(2020, "yellow")
+    # web_to_gcs(2019, "green")
+    # web_to_gcs(2020, "green")
