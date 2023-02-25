@@ -298,16 +298,22 @@ prefect agent start --work-queue <"name of the work queue, usually this is set t
 
 ## Seeds:
 - These are best described as the raw data (in CSV format)
+  - Often, these are dimension tables that update less often
 - Allows you to operate on raw csv files (vs data in a dwh)
 
 - The directory structure of a dbt project looks like this:
 ```
-- analyses    : 
-- macros      :
-- models      :
-  - staging   : models used to stage data
-  - core      : models used to serve data to BI
-- seeds       :
-- snapshots   :
-- tests       :
+- analyses        : 
+- macros          : includes a macro_properties.yml
+- models          :
+  - staging       : models used to stage data, should have a schema.yml
+  - core          : models used to serve data to BI, should have a schema.yml
+- seeds           :
+- snapshots       :
+- tests           :
+- dbt_project.yml :
+- packages.yml    :
 ```
+
+## Important files in a project:
+dbt_project.yml
