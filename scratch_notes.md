@@ -267,3 +267,47 @@ prefect deployment apply <deployment.yaml>
 - to run it, you need to assign it to an agent and a work queue like this:
 ``` shell
 prefect agent start --work-queue <"name of the work queue, usually this is set to default?">
+```
+
+# Week 3 Notes
+
+- I didn't take much notes for the data warehouse section since most of it was just sql in bigquery and setting buckets
+
+# Week 4 Notes
+## Top level dbt concepts:
+  - a dbt "model" is basically a unit of code that abstracts way the DDL/DML aspect of data modeling
+  - you have a dbt model file: my_model.sql with syntax like this:
+  ```sql
+  {{
+    config(materialized='table')
+  }}
+  ```
+  - which compiles into SQL that looks like this:
+  ```sql
+  create table my_schema.my_model as (
+    Select *
+    from staging.source_table
+    where record_state = 'ACTIVE'
+  )
+  ```
+  - materialization strategies include common things like: table, view, incremental, ephemeral
+## Sources:
+- The from clause above needs to have something to point to
+- That is defined in a config file (yml)
+- so for example, instead of writing ```select * from staging.fhvdata``` if you have a source defined in your ```schema.yml``` you would write ```select * from {{ source('staging','fhvdata') }}```
+
+## Seeds:
+- These are best described as the raw data (in CSV format)
+- Allows you to operate on raw csv files (vs data in a dwh)
+
+- The directory structure of a dbt project looks like this:
+```
+- analyses    : 
+- macros      :
+- models      :
+  - staging   : models used to stage data
+  - core      : models used to serve data to BI
+- seeds       :
+- snapshots   :
+- tests       :
+```
