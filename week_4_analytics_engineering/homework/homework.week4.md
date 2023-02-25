@@ -28,8 +28,13 @@ You should find the views and models for querying in your DWH.
 
 - 41648442
 - 51648442
-- 61648442
+- 61648442 <--
 - 71648442
+
+#### Response:
+```sql
+SELECT count(*) FROM `possible-lotus-375803.dbt_wayoub.fact_trips`
+```
 
 
 ### Question 2: 
@@ -40,7 +45,7 @@ You will need to complete "Visualising the data" videos, either using [google da
 
 - 89.9/10.1
 - 94/6
-- 76.3/23.7
+- 76.3/23.7 <--
 - 99.1/0.9
 
 
@@ -53,10 +58,14 @@ Create a staging model for the fhv data for 2019 and do not add a deduplication 
 Filter records with pickup time in year 2019.
 
 - 33244696
-- 43244696
+- 43244696 <--
 - 53244696
 - 63244696
 
+#### Response:
+```sql
+SELECT count(*) FROM `possible-lotus-375803.dbt_wayoub.stg_fhv`
+```
 
 ### Question 4: 
 
@@ -67,9 +76,14 @@ Similar to what we've done in fact_trips, keep only records with known pickup an
 Run it via the CLI without limits (is_test_run: false) and filter records with pickup time in year 2019.
 
 - 12998722
-- 22998722
+- 22998722 <--
 - 32998722
 - 42998722
+
+#### Response:
+```sql
+SELECT count(*) FROM `possible-lotus-375803.dbt_wayoub.fact_fhv`
+```
 
 ### Question 5: 
 
@@ -79,10 +93,16 @@ Create a dashboard with some tiles that you find interesting to explore the data
 
 - March
 - April
-- January
+- January <--
 - December
 
-
+#### Response:
+```sql
+SELECT extract(month from pickup_datetime) as month, count(*) as records 
+FROM `possible-lotus-375803.dbt_wayoub.fact_fhv`
+group by 1
+order by 2 desc
+```
 
 ## Submitting the solutions
 
