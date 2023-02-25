@@ -34,3 +34,9 @@ clean-targets:         # directories to be removed by `dbt clean`
 models:
   nytaxi:
     # Applies to all files under models/example/
+
+seeds:
+  nytaxi:
+    taxi_zones:
+      -column_types:
+        locationid: numeric
