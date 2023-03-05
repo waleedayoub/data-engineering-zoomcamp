@@ -1,0 +1,14 @@
+gcloud compute instances create dataeng \
+    --project=possible-lotus-375803 \
+    --zone=us-east1-b \
+    --machine-type=e2-standard-8 \
+    --network-interface=network-tier=PREMIUM,subnet=default \
+    --maintenance-policy=MIGRATE \
+    --provisioning-model=STANDARD \
+    --service-account=dtc-de-user@possible-lotus-375803.iam.gserviceaccount.com \
+    --scopes=https://www.googleapis.com/auth/cloud-platform \
+    --create-disk=auto-delete=yes,boot=yes,device-name=dataeng,image=projects/ubuntu-os-cloud/global/images/ubuntu-1804-bionic-v20230215,mode=rw,size=30,type=projects/possible-lotus-375803/zones/us-east1-b/diskTypes/pd-balanced \
+    --no-shielded-secure-boot \
+    --shielded-vtpm \
+    --shielded-integrity-monitoring \
+    --reservation-affinity=any

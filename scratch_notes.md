@@ -274,8 +274,28 @@ prefect agent start --work-queue <"name of the work queue, usually this is set t
 - I didn't take much notes for the data warehouse section since most of it was just sql in bigquery and setting buckets
 
 # Week 4 Notes
-## Top level dbt concepts:
-  - a dbt "model" is basically a unit of code that abstracts way the DDL/DML aspect of data modeling
+## dbt Structure and Concepts:
+### Directory structure
+- The directory structure of a dbt project looks like this:
+```
+- analyses        : 
+- macros          : includes a macro_properties.yml
+- models          :
+  - staging       : models used to stage data, should have a schema.yml
+  - core          : models used to serve data to BI, should have a schema.yml
+- seeds           :
+- snapshots       :
+- tests           :
+- dbt_project.yml :
+- packages.yml    :
+```
+
+### Important files in a project:
+dbt_project.yml
+
+### Concepts:
+#### Models
+  - a dbt "model" is basically a unit of code that abstracts away the DDL/DML aspect of data modeling
   - you have a dbt model file: my_model.sql with syntax like this:
   ```sql
   {{
@@ -291,29 +311,94 @@ prefect agent start --work-queue <"name of the work queue, usually this is set t
   )
   ```
   - materialization strategies include common things like: table, view, incremental, ephemeral
-## Sources:
+
+#### Sources:
 - The from clause above needs to have something to point to
 - That is defined in a config file (yml)
 - so for example, instead of writing ```select * from staging.fhvdata``` if you have a source defined in your ```schema.yml``` you would write ```select * from {{ source('staging','fhvdata') }}```
 
-## Seeds:
+#### Seeds:
 - These are best described as the raw data (in CSV format)
   - Often, these are dimension tables that update less often
 - Allows you to operate on raw csv files (vs data in a dwh)
 
-- The directory structure of a dbt project looks like this:
-```
-- analyses        : 
-- macros          : includes a macro_properties.yml
-- models          :
-  - staging       : models used to stage data, should have a schema.yml
-  - core          : models used to serve data to BI, should have a schema.yml
-- seeds           :
-- snapshots       :
-- tests           :
-- dbt_project.yml :
-- packages.yml    :
-```
+# Week 5 Notes - Batch processing
 
-## Important files in a project:
-dbt_project.yml
+## Batch Processing
+
+- There are 2 ways of processing data:
+  - **Batch processing**: processing _chunks_ of data at _regular intervals_.
+      * Example: processing taxi trips each month.
+          ```mermaid
+          graph LR;
+              a[(taxi trips DB)]-->b(batch job)
+              b-->a
+          ```
+  - **Streaming**: processing data _on the fly_.
+      * Example: processing a taxi trip as soon as it's generated.
+          ```mermaid
+          graph LR;
+              a{{User}}-. gets on taxi .->b{{taxi}}
+              b-- ride start event -->c([data stream])
+              c-->d(Processor)
+              d-->e([data stream])
+          ```
+- Batch jobs are often processing data over different intervals:
+  - Weekly
+  - Daily
+  - X Times per hour/day/etc
+  - Every X hours/days/minutes/etc.
+- Weekly/daily tend to be the most common
+- Batch jobs are commonly processed using tools like Python, SQL, Spark, Flink
+- Python scripts are versatile and be executed anywhere
+- Batch processing jobs are usually called **workflows** and are _orchestrated_ or _scheduled_ using tools like Airflow or Prefect with a few steps in between. A common workflow would look like this:
+```mermaid
+  graph LR;
+      A(DataLake CSV)-->B(Python);
+      B-->C[(SQL - e.g. using dbt)]
+      C-->D(Spark)
+      D-->E(Python)
+```
+- Advantages of batch processing using workflows:
+  - Easy to manage (although that's debatable given how complex the toolchain has become!)
+  - Retries - if you look at the prefect section, _retry_ functionality seems like a very important feature of their _task_ decorators
+  - Scale - you can choose to scale different parts of the workflow separately
+- Disadvantages:
+  - Delays: the entire workflow needs to run before data for the data interval it is processing can be used
+    - For most use cases that's just fine
+
+## Intro to Spark
+- Spark is a data processing engine that can be horizontally scaled
+```mermaid
+graph LR;
+    A[(Data Lake)]-->|Pulls data|B(Spark)
+    B-->|Outputs data|A
+    B<-->C{Data processing}
+    C-->1
+    C-->2
+    C-->...
+    C-->N
+```
+- Spark is multi-language and is written in Scala
+- You can find wrappers for Python (pyspark), R (sparkr), etc.
+- Spark can also be used for streaming (by looking at a stream of data into smaller batch jobs)
+- Spark is most often used on data found in data lakes and for jobs that can't be easily expressed using SQL
+  - For jobs expressed in SQL, there are many solutions (including SparkSQL)
+  - We saw a very new approach in _week 3_ GCP by using BQ on external tables stored in GCS
+
+### Installing Spark
+- I'm going to try a couple of things here:
+  1. I'm going to do what Alexey did in the video and install Spark on a Linux VM in GCP. I'm generally very nervous to use paid services in public cloud providers so I'll try this but then default to option 2, which is:
+  2. Running this on a macbook pro I have in my house which I use as a docker context
+
+- For number 1, we'll be using OpenJDK java _(jdk v11.0.2)_ and the latest spark version
+- We'll need to make sure once we've downloaded and extracted all the relevant files, we set some environment variables:
+```shell
+# export JAVA environment variables in a linux machine
+export JAVA_HOME="${HOME}/spark/jdk-11.0.2"
+export PATH="${JAVA_HOME}/bin:${PATH}"
+
+# export spark environment variables in a linux machine
+export SPARK_HOME="${HOME}/spark/spark-3.3.2-bin-hadoop3"
+export PATH="${SPARK_HOME}/bin:${PATH}"
+```

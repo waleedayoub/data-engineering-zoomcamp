@@ -15,12 +15,35 @@ For this homework we will be using the FHVHV 2021-06 data found here. [FHVHV Dat
 - Execute spark.version.
 
 What's the output?
-- 3.3.2
+- 3.3.2 <--
 - 2.1.4
 - 1.2.3
 - 5.4
 </br></br>
 
+### Response:
+```shell
+waleed@dataeng:~$ pyspark
+Python 3.6.9 (default, Nov 25 2022, 14:10:45)
+[GCC 8.4.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+23/03/05 19:44:44 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Welcome to
+      ____              __
+     / __/__  ___ _____/ /__
+    _\ \/ _ \/ _ `/ __/  '_/
+   /__ / .__/\_,_/_/ /_/\_\   version 3.3.2
+      /_/
+
+Using Python version 3.6.9 (default, Nov 25 2022 14:10:45)
+Spark context Web UI available at http://dataeng.us-east1-b.c.possible-lotus-375803.internal:4040
+Spark context available as 'sc' (master = local[*], app id = local-1678045485577).
+SparkSession available as 'spark'.
+>>> spark.version
+'3.3.2'
+```
 
 ### Question 2: 
 
