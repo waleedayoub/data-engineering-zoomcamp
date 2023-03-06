@@ -391,14 +391,26 @@ graph LR;
   1. I'm going to do what Alexey did in the video and install Spark on a Linux VM in GCP. I'm generally very nervous to use paid services in public cloud providers so I'll try this but then default to option 2, which is:
   2. Running this on a macbook pro I have in my house which I use as a docker context
 
-- For number 1, we'll be using OpenJDK java _(jdk v11.0.2)_ and the latest spark version
-- We'll need to make sure once we've downloaded and extracted all the relevant files, we set some environment variables:
-```shell
-# export JAVA environment variables in a linux machine
-export JAVA_HOME="${HOME}/spark/jdk-11.0.2"
-export PATH="${JAVA_HOME}/bin:${PATH}"
+1. Linux install
+  - We'll be using OpenJDK java _(jdk v11.0.2)_ and the latest spark version
+  - We'll need to make sure once we've downloaded and extracted all the relevant files, we set some environment variables:
+  ```shell
+  # export JAVA environment variables in a linux machine
+  export JAVA_HOME="${HOME}/spark/jdk-11.0.2"
+  export PATH="${JAVA_HOME}/bin:${PATH}"
 
-# export spark environment variables in a linux machine
-export SPARK_HOME="${HOME}/spark/spark-3.3.2-bin-hadoop3"
-export PATH="${SPARK_HOME}/bin:${PATH}"
-```
+  # export spark environment variables in a linux machine
+  export SPARK_HOME="${HOME}/spark/spark-3.3.2-bin-hadoop3"
+  export PATH="${SPARK_HOME}/bin:${PATH}"
+  ```
+2. MacOS install
+  - Complete instructions from the class are in [macos.md](./week_5_batch_processing/setup/macos.md)
+  - Main difference with linux install is that we install all the packages from homebrew vs directly using binaries
+    - Important correction: you need to use `brew install java11` for openjdk 11
+    - The default step `brew install java` installs version 19
+    - From [here](https://spark.apache.org/docs/latest/), the following versions are supported on macos to run Spark 3.3.2:
+      > Spark runs on Java 8/11/17, Scala 2.12/2.13, Python 3.7+ and R 3.5+
+    - To install pyspark now, we need to pass some env vars again. The change made from the instructions is the version of the py4j like this:
+      ```shell
+      export PYTHONPATH="${SPARK_HOME}/python/lib/py4j-0.10.9.5-src.zip:$PYTHONPATH"
+      ```
