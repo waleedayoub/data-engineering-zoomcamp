@@ -422,8 +422,13 @@ spark = SparkSession.builder \
     .appName('test') \
     .getOrCreate() \
 ```
-- `spark` is an object we create that inherits from the `SparkSession` class
-- `SparkSession` is the class of the object that we instantiate. builder is the builder method.
-- `master()` sets the Spark master URL to connect to. The local string means that Spark will run on a local cluster. [*] means that Spark will run with as many CPU cores as possible.
-- `appName()` defines the name of our application/session. This will show in the Spark UI.
-- `getOrCreate()` will create the session or recover the object if it was previously created.
+  - `spark` is an object we create that inherits from the `SparkSession` class
+  - `SparkSession` is the class of the object that we instantiate. builder is the builder method.
+  - `master()` sets the Spark master URL to connect to. The local string means that Spark will run on a local cluster. [*] means that Spark will run with as many CPU cores as possible.
+  - `appName()` defines the name of our application/session. This will show in the Spark UI.
+  - `getOrCreate()` will create the session or recover the object if it was previously created.
+- A single spark cluster will have many executors. The executors is where the processing logic is performed.
+  - Each executor can process only one file at a time. Once all executors are full, the remaining files are queued waiting for an executor to free up
+  - Conversely, if there are fewer files than executors, executors will remain idle until more files show up
+- This is why files are partitioned and is done using spark method: `repartition(num_partitions)`
+  - This is a lazy computation and will only run when executed
