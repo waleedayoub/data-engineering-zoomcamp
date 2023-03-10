@@ -414,3 +414,16 @@ graph LR;
       ```shell
       export PYTHONPATH="${SPARK_HOME}/python/lib/py4j-0.10.9.5-src.zip:$PYTHONPATH"
       ```
+### Working with Spark / pySpark
+- The anatomy of a Spark session looks like this in python:
+```python
+spark = SparkSession.builder \
+    .master("local[*]") \
+    .appName('test') \
+    .getOrCreate() \
+```
+- `spark` is an object we create that inherits from the `SparkSession` class
+- `SparkSession` is the class of the object that we instantiate. builder is the builder method.
+- `master()` sets the Spark master URL to connect to. The local string means that Spark will run on a local cluster. [*] means that Spark will run with as many CPU cores as possible.
+- `appName()` defines the name of our application/session. This will show in the Spark UI.
+- `getOrCreate()` will create the session or recover the object if it was previously created.
