@@ -1,8 +1,11 @@
 from pyspark.sql import SparkSession
 import pyspark.sql.functions as F
 
+<<<<<<< HEAD
 # from pyspark.sql.streaming.trigger import Trigger
 
+=======
+>>>>>>> class/main
 from settings import RIDE_SCHEMA, CONSUME_TOPIC_RIDES_CSV, TOPIC_WINDOWED_VENDOR_ID_COUNT
 
 
